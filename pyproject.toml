@@ -4,6 +4,16 @@ version = "0.0.0"
 description = "Move to a land of Spot AWS instances"
 authors = ["Antonio Feregrino <antonio.feregrino@gmail.com>"]
 license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/fferegrino/soft-spot"
+repository = "https://github.com/fferegrino/soft-spot"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Topic :: Utilities"
+]
+
+[tool.poetry.scripts]
+sspot = 'soft_spot.__main__:cli'
 
 [tool.poetry.dependencies]
 python = "^3.6"
