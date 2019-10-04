@@ -1,12 +1,10 @@
 import configparser
-import logging
 from functools import partial
 from time import sleep
 
 import boto3
 import click
 
-LOGGER = logging.getLogger("soft_spot.main")
 DELAY = 10
 
 
@@ -102,7 +100,6 @@ def request_instance(account_info, config):
 
 
 @click.group()
-@click.option("--debug/--no-debug", default=False)
 @click.option(
     "--account_info_file",
     "-a",
@@ -110,9 +107,8 @@ def request_instance(account_info, config):
     type=click.Path(exists=True, dir_okay=False),
 )
 @click.pass_context
-def cli(context, debug, account_info_file):
+def cli(context, account_info_file):
     context.ensure_object(dict)
-    click.echo("Debug mode is %s" % ("on" if debug else "off"))
     context.obj["account_info"] = get_account_info(account_info_file)
 
 
