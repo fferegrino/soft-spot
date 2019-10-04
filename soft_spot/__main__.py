@@ -61,6 +61,15 @@ def wait_for_instance(spot_request_id):
         sleep(DELAY)
 
 
+def attach_device(instance_id, config):
+    volume_id = config.get("VOLUME", "id")
+    device = config.get("VOLUME", "device")
+    print(f"Will attach the volume {volume_id} to {instance_id} at {device}")
+    attachment_result = client.attach_volume(VolumeId=volume_id, InstanceId=instance_id,
+                                             Device=device)
+    return attachment_result
+
+
 def get_public_ip(instance):
     return instance['NetworkInterfaces'][0]['Association']['PublicIp']
 
@@ -82,12 +91,4 @@ if __name__ == "__main__":
     public_ip = get_public_ip(instance)
     print(f"Instance {instance_id} started, IP: {public_ip}")
     if config.has_section("VOLUME"):
-        volume_id = config.get("VOLUME", "id")
-        device = config.get("VOLUME", "device")
-        print(f"Will attach the volume {volume_id} to {instance_id} at {device}")
-        import pdb;
-
-        pdb.set_trace()
-        attachment_result = client.Instance(instance_id).attach_volume(VolumeId=volume_id,
-                                                                       Device=device)
-        pass
+        attach_device(instance_id, config)
