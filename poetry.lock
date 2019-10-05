@@ -1,5 +1,13 @@
 [[package]]
 category = "dev"
+description = "Version-bump your software with a single command!"
+name = "advbumpversion"
+optional = false
+python-versions = "*"
+version = "1.2.0"
+
+[[package]]
+category = "dev"
 description = "A small Python module for determining appropriate platform-specific dirs, e.g. a \"user data dir\"."
 name = "appdirs"
 optional = false
@@ -288,10 +296,11 @@ python-versions = "*"
 version = "1.11.2"
 
 [metadata]
-content-hash = "059f135bafe9f12020da86d9574a15d57f1a379b1253880c765c50788ce16ee2"
+content-hash = "2ad42ce4eb166b4e17f3caee3e6c725ad912d07bab4daabd9ce16f25af62dde9"
 python-versions = "^3.6"
 
 [metadata.hashes]
+advbumpversion = ["87445c9c755b2155f3ccf03c3cd9b2d94589b044d38cbdda775c315397c934d1", "a605d545ca4153c38b82c994729b1bc11b7d23bff4226e45440bbbc1881df8a5"]
 appdirs = ["9e5896d1372858f8dd3344faf4e5014d21849c756c8d5701f78f8a103b372d92", "d8b24664561d0d34ddfaec54636d502d7cea6e29c3eaf68f3df6180863e2166e"]
 astroid = ["98c665ad84d10b18318c5ab7c3d203fe11714cbad2a4aef4f44651f415392754", "b7546ffdedbf7abcfbff93cd1de9e9980b1ef744852689decc5aeada324238c6"]
 attrs = ["ec20e7a4825331c1b5ebf261d111e16fa9612c1f7a5e1f884f12bd53a664dfd2", "f913492e1663d3c36f502e5e9ba6cd13cf19d7fab50aa13239e420fef95e1396"]
