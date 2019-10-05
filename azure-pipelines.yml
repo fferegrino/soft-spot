@@ -27,8 +27,7 @@ steps:
 
 - script: |
     source $HOME/.poetry/env
-    echo "[pypi]" >> ~/.pypirc
-    echo "username = io_exception" >> ~/.pypirc
-    echo "password = $(PYPI_PASSWORD)" >> ~/.pypirc
+    export PYPI_USERNAME=io_exception
+    export PYPI_PASSWORD=$(PYPI_PASSWORD)
     make publish
   displayName: 'Build and, maybe, publish package'

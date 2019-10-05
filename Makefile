@@ -50,5 +50,5 @@ publish: build
 ifeq ($(TAG),)
 	@echo "Skipping PyPi publishing"
 else
-	$(POETRY) publish
+	$(POETRY) publish -u ${PYPI_USERNAME} -p ${PYPI_PASSWORD}
 endif
