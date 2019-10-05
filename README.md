@@ -7,7 +7,7 @@ However, what is a shame is having to go through that clunky UI and click here a
 ## How?
 Just define a file with the specifications of the machine you want to launch:  
 
-```toml
+```ini
 [INSTANCE]
 ami = ami-06f2f779464715dc5
 type = t2.micro
@@ -26,7 +26,7 @@ mount_point = /data/
 
 Then just execute the `sspot request` command:  
 
-```python
+```bash
 sspot request <<instance_config_file>>
 ```
 
@@ -35,7 +35,7 @@ This script uses `boto3` so I strongly recommend heading over to [its documentat
 
 Alternatively, you could create a tiny configuration file like this:  
 
-```toml
+```ini
 [DEFAULT]
 aws_access_key_id = an_acces_key
 aws_secret_access_key = a_secret_key
@@ -44,6 +44,6 @@ region_name = us-west-1
 
 And then pass it on to the `spot` command:
 
-```python
+```bash
 sspot -a ~/aws_credentials.txt request <<instance_config_file>> 
 ```
