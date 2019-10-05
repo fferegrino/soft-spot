@@ -1,5 +1,7 @@
 # soft-spot
 
+[![Build Status](https://dev.azure.com/messier-16/soft-spot/_apis/build/status/fferegrino.soft-spot?branchName=master)](https://dev.azure.com/messier-16/soft-spot/_build/latest?definitionId=1&branchName=master) [![PyPI version](https://badge.fury.io/py/soft-spot.svg)](https://pypi.org/project/soft-spot/)
+
 Do you have a soft spot for cheap cloud computing (**a.k.a. AWS Spot instances**)? Me too, no shame on that.
 
 However, what is a shame is having to go through that clunky UI and click here and there to get one; `soft-spot` makes it dead easy to launch an instance:
