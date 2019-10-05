@@ -1,0 +1,34 @@
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: 3.6
+  displayName: Install Python
+
+- script: |
+    curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | python
+    source $HOME/.poetry/env
+    poetry --version
+  displayName: 'Set up environment'
+
+- script: |
+    source $HOME/.poetry/env
+    poetry --version
+    poetry install
+  displayName: 'Install dependencies'
+
+- script: |
+    source $HOME/.poetry/env
+    make lint
+  displayName: 'Linting'
+
+- script: |
+    source $HOME/.poetry/env
+    echo "[pypi]" >> ~/.pypirc
+    echo "username = io_exception" >> ~/.pypirc
+    echo "password = $(PYPI_PASSWORD)" >> ~/.pypirc
+    make publish
+  displayName: 'Build and, maybe, publish package'
