@@ -1,9 +1,11 @@
+from datetime import datetime
 from tempfile import NamedTemporaryFile, mkstemp
 from unittest.mock import MagicMock, patch
 import configparser
 
 import pytest
 from click.testing import CliRunner
+from freezegun import freeze_time
 
 from soft_spot.__main__ import cli
 
@@ -41,3 +43,43 @@ def test_request(request_instance_mock, config_parser, invoke, config_file):
     assert result.exit_code == 0
     config_parser.return_value.read.assert_called_once_with(config_file)
     request_instance_mock.assert_called_once_with({}, config_parser.return_value)
+
+
+@freeze_time("2012-01-14")
+@pytest.mark.parametrize(
+    ["start_time", "end_time", "start_time_expected", "end_time_expected"],
+    [
+        (None, None, datetime(2012, 1, 13), datetime(2012, 1, 14)),
+        ("2019-01-01", "2019-10-11", datetime(2019, 1, 1), datetime(2019, 10, 11)),
+    ],
+)
+@patch("soft_spot.__main__.configparser.ConfigParser", autospec=True)
+@patch("soft_spot.__main__.get_prices", autospec=True)
+@patch("soft_spot.__main__.tabulate", autospec=True)
+def test_price(
+    tabulate_mock,
+    get_prices_mock,
+    config_parser,
+    start_time,
+    end_time,
+    start_time_expected,
+    end_time_expected,
+    invoke,
+    config_file,
+):
+    prices, headers = MagicMock(), MagicMock()
+    get_prices_mock.return_value = (headers, prices)
+
+    arguments = [config_file]
+    if start_time:
+        arguments.extend(["--start-time", start_time])
+    if end_time:
+        arguments.extend(["--end-time", end_time])
+
+    result = invoke("price", *arguments)
+    assert result.exit_code == 0
+    config_parser.return_value.read.assert_called_once_with(config_file)
+    get_prices_mock.assert_called_once_with(
+        {}, config_parser.return_value, start_time_expected, end_time_expected
+    )
+    tabulate_mock.assert_called_once_with(prices, headers=headers)

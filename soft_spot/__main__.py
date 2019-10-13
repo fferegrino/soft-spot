@@ -99,6 +99,7 @@ def get_prices(account_info, instance_configuration, start_time, end_time):
         [p[key] for key in headers] for p in response["SpotPriceHistory"]
     ]
 
+    spot_price_history = sorted(spot_price_history, key=lambda prc: prc[0])
     return headers, spot_price_history
 
 
@@ -148,7 +149,6 @@ def price(context, instance_file, start_time, end_time):
     headers, prices = get_prices(
         account_info, instance_configuration, end_time=end_time, start_time=start_time
     )
-    prices = sorted(prices, key=lambda prc: prc[0])
     click.echo(tabulate(prices, headers=headers))
 
 
