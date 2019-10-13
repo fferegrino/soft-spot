@@ -19,6 +19,7 @@ sspot = 'soft_spot.__main__:cli'
 click = "^7.0"
 python = "^3.6"
 boto3 = "^1.9"
+tabulate = "^0.8.5"
 
 [tool.poetry.dev-dependencies]
 advbumpversion = "^1.2"

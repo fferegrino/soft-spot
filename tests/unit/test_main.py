@@ -22,7 +22,13 @@ def invoke():
 def config_file(tmpdir):
     _, file_name = mkstemp(suffix=".spot", dir=tmpdir)
     config = configparser.ConfigParser()
-    config["DEFAULT"] = {"key": "value"}
+    config["INSTANCE"] = {
+        "ami": "ami-0be057a22c63962cb",
+        "type": "t2.micro",
+        "security_group": "a_sec_group",
+        "key_pair": "key_pair",
+        "spot_price": 0.0035,
+    }
     with open(file_name, "w") as configfile:
         config.write(configfile)
     return file_name
