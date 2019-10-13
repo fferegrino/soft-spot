@@ -23,11 +23,17 @@ steps:
 - script: |
     source $HOME/.poetry/env
     make lint
-  displayName: 'Linting'
+  displayName: 'Lint'
+
+- script: |
+    source $HOME/.poetry/env
+    make unit_test
+  displayName: 'Unit test'
 
 - script: |
     source $HOME/.poetry/env
     export PYPI_USERNAME=io_exception
     export PYPI_PASSWORD=$(PYPI_PASSWORD)
     make publish
-  displayName: 'Build and, maybe, publish package'
+  condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
+  displayName: 'Publish package'

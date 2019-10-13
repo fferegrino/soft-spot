@@ -21,6 +21,9 @@ lint:
 	$(POETRY_RUN) black $(SOURCE_FILES) --check
 	$(POETRY_RUN) pylint $(SOURCES_FOLDER)
 
+unit_test:
+	$(POETRY_RUN) pytest tests/unit
+
 check_on_master:
 ifeq ($(BRANCH),master)
 	echo "You are good to go!"
