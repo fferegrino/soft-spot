@@ -16,6 +16,8 @@ type = t2.micro
 security_group = wizard-launch
 key_pair = a_secret_key
 spot_price = 0.0035
+product_description = Linux/UNIX
+availability_zone = eu-west-2b
 
 [ACCOUNT]
 user = unbuntu
