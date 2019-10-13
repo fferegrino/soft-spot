@@ -120,7 +120,7 @@ def request(context, instance_file):
     click.echo(f"Requesting from: {instance_file}")
 
     instance_configuration = configparser.ConfigParser()
-    instance_configuration.read("mini.spot")
+    instance_configuration.read(instance_file)
 
     request_instance(account_info, instance_configuration)
 
