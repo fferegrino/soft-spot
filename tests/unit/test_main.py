@@ -5,6 +5,13 @@ from freezegun import freeze_time
 import pytest
 
 
+@pytest.fixture
+def invoke(invoke):
+    with patch("soft_spot.__main__.get_client", autospec=True) as cli:
+        yield invoke
+        assert cli.called
+
+
 @patch("soft_spot.__main__.configparser.ConfigParser", autospec=True)
 @patch("soft_spot.__main__.request_instance", autospec=True)
 def test_request(request_instance_mock, config_parser, invoke, config_file):
