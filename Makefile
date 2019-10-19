@@ -24,6 +24,9 @@ lint:
 unit_test:
 	$(POETRY_RUN) pytest tests/unit
 
+integration_test:
+	$(POETRY_RUN) pytest tests/integration
+
 check_on_master:
 ifeq ($(BRANCH),master)
 	echo "You are good to go!"
@@ -55,3 +58,23 @@ ifeq ($(TAG),)
 else
 	$(POETRY) publish -u ${PYPI_USERNAME} -p ${PYPI_PASSWORD}
 endif
+
+clean: clean-py clean-build clean-test
+
+clean-test:
+	rm -rf htmlcov
+	rm -rf .pytest_cache
+
+clean-py:
+	find . -name '*.pyc' -exec rm -f {} +
+	find . -name '*.pyo' -exec rm -f {} +
+	find . -name '*~' -exec rm -f {} +
+	find . -name '__pycache__' -exec rm -fr {} +
+
+clean-build:
+	rm -fr dist/
+	rm -fr build/
+	rm -fr .eggs/
+	rm -f requirements*.txt
+	find . -name '*.egg-info' -exec rm -fr {} +
+	find . -name '*.egg' -exec rm -f {} +
