@@ -27,7 +27,8 @@ def config_file(tmpdir):
     _, file_name = mkstemp(suffix=".spot", dir=tmpdir)
     config = configparser.ConfigParser()
     config["INSTANCE"] = {
-        "ami": "ami-0be057a22c63962cb",
+        # ami-1e749f67 - ubuntu/images/hvm-ssd/ubuntu-trusty-14.04-amd64-server-20170727
+        "ami": "ami-1e749f67",
         "type": "t2.micro",
         "security_group": "a_sec_group",
         "key_pair": "key_pair",

@@ -23,6 +23,16 @@ def get_instance_configuration(config):
     }
 
 
+def wait_until_instance_ready(client, instance_id):
+    response = client.describe_instance_status(InstanceIds=[instance_id])
+    status = response["InstanceStatuses"][0]["InstanceState"]["Name"]
+    while status == "pending":
+        response = client.describe_instance_status(InstanceIds=[instance_id])
+        status = response["InstanceStatuses"][0]["InstanceState"]["Name"]
+        sleep(1)
+    return response["InstanceStatuses"][0]["InstanceState"]["Name"]
+
+
 def request_instance(client, config):
 
     instance_config = get_instance_configuration(config)
@@ -43,13 +53,19 @@ def request_instance(client, config):
         instance_id = instance["InstanceId"]
         public_ip = get_public_ip(instance)
         click.echo(f"Instance {instance_id} started, IP: {public_ip}")
-        if config.has_section("VOLUME"):
-            attach_device(client, instance_id, config)
-        click.echo(
-            click.style(
-                f"Done! the IP of the image is {public_ip}", bg="blue", fg="white"
+        instance_status = wait_until_instance_ready(client, instance_id)
+        if instance_status == "running":
+            if config.has_section("VOLUME"):
+                attach_device(client, instance_id, config)
+            click.echo(
+                click.style(
+                    f"Done! the IP of the image is {public_ip}", bg="blue", fg="white"
+                )
             )
-        )
+        else:
+            click.echo(
+                f"The instance created changed to a non-running state: {instance_status}"
+            )
     else:
         click.echo(f"The request failed, status {spot_request['State']}")
 
