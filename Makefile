@@ -24,6 +24,9 @@ lint:
 unit_test:
 	$(POETRY_RUN) pytest tests/unit
 
+integration_test:
+	$(POETRY_RUN) pytest tests/integration
+
 check_on_master:
 ifeq ($(BRANCH),master)
 	echo "You are good to go!"

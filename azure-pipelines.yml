@@ -32,6 +32,11 @@ steps:
 
 - script: |
     source $HOME/.poetry/env
+    make integration_test
+  displayName: 'Integration test'
+
+- script: |
+    source $HOME/.poetry/env
     export PYPI_USERNAME=io_exception
     export PYPI_PASSWORD=$(PYPI_PASSWORD)
     make publish
