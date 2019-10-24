@@ -22,7 +22,7 @@ lint:
 	$(POETRY_RUN) pylint $(SOURCES_FOLDER)
 
 unit_test:
-	$(POETRY_RUN) pytest tests/unit
+	$(POETRY_RUN) pytest -vvv tests/unit
 
 integration_test:
 	$(POETRY_RUN) pytest tests/integration

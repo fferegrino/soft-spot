@@ -31,6 +31,7 @@ def read_instance_configuration(instance_file):
 )
 @click.pass_context
 def cli(context, account_info_file):
+
     context.ensure_object(dict)
     context.obj["client"] = get_client(get_account_info(account_info_file))
 
@@ -53,7 +54,7 @@ def request(context, instance_file, volumes, scripts):
 
     public_ip = get_public_ip(instance)
 
-    if instance_configuration.has_section("SCRIPTS") and scripts:
+    if instance_configuration.has_section("SCRIPT") and scripts:
         execute_scripts(public_ip, instance_configuration)
 
     click.echo(

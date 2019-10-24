@@ -1,6 +1,9 @@
+import backoff
 from fabric.connection import Connection
+from paramiko.ssh_exception import NoValidConnectionsError
 
 
+@backoff.on_exception(backoff.expo, NoValidConnectionsError, max_time=90)
 def get_connection(host, user, private_key_path):
     conn = Connection(
         host=host, user=user, connect_kwargs={"key_filename": private_key_path}
@@ -25,5 +28,5 @@ def mount_drive(conn, location, device):
 
 
 def execute(conn, command):
-    cmd_result = conn.run(command)
+    cmd_result = conn.run(command, hide=True)
     return cmd_result.stdout.strip()
