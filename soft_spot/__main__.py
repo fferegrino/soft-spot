@@ -7,11 +7,19 @@ from tabulate import tabulate
 
 from soft_spot.configuration import get_account_info
 from soft_spot.implementations.price import get_prices
-from soft_spot.implementations.request import request_instance
+from soft_spot.implementations.request import get_public_ip, request_instance
+from soft_spot.implementations.scripts import execute_scripts
+from soft_spot.implementations.volumes import attach_device
 
 
 def get_client(account_info):
     return boto3.client("ec2", **account_info)
+
+
+def read_instance_configuration(instance_file):
+    instance_configuration = configparser.ConfigParser()
+    instance_configuration.read(instance_file)
+    return instance_configuration
 
 
 @click.group()
@@ -30,13 +38,27 @@ def cli(context, account_info_file):
 @cli.command()
 @click.pass_context
 @click.argument("instance_file", type=click.Path(exists=True, dir_okay=False))
-def request(context, instance_file):
+@click.option("--volumes/--no-volumes", default=True)
+@click.option("--scripts/--no-scripts", default=True)
+def request(context, instance_file, volumes, scripts):
     click.echo(f"Requesting from: {instance_file}")
+    client = context.obj["client"]
 
-    instance_configuration = configparser.ConfigParser()
-    instance_configuration.read(instance_file)
+    instance_configuration = read_instance_configuration(instance_file)
 
-    request_instance(context.obj["client"], instance_configuration)
+    instance = request_instance(client, instance_configuration)
+
+    if instance_configuration.has_section("VOLUME") and volumes:
+        attach_device(client, instance["InstanceId"], instance_configuration)
+
+    public_ip = get_public_ip(instance)
+
+    if instance_configuration.has_section("SCRIPTS") and scripts:
+        execute_scripts(public_ip, instance_configuration)
+
+    click.echo(
+        click.style(f"Done! the IP of the image is {public_ip}", bg="blue", fg="white")
+    )
 
 
 @cli.command()
@@ -46,9 +68,7 @@ def request(context, instance_file):
 @click.option("--end-time", type=click.DateTime(), default=None)
 def price(context, instance_file, start_time, end_time):
     click.echo(f"Requesting from: {instance_file}")
-
-    instance_configuration = configparser.ConfigParser()
-    instance_configuration.read(instance_file)
+    instance_configuration = read_instance_configuration(instance_file)
 
     if end_time is None:
         end_time = datetime.now()
