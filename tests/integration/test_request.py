@@ -18,5 +18,5 @@ def test_full_request(ec2, invoke, config_file, aws_region):
     t = threading.Timer(3.0, start_responding)
     t.start()
 
-    result = invoke("request", config_file)
+    result = invoke("request", config_file, "--no-volumes", "--no-scripts")
     assert result.exit_code == 0

@@ -11,21 +11,23 @@ Just define a file with the specifications of the machine you want to launch:
 
 ```ini
 [INSTANCE]
-ami = ami-06f2f779464715dc5
+ami = ami-06d51e91cea0dac8d
 type = t2.micro
-security_group = wizard-launch
-key_pair = a_secret_key
-spot_price = 0.0035
-product_description = Linux/UNIX
-availability_zone = eu-west-2b
-
-[ACCOUNT]
-user = unbuntu
+security_group = SecurityGroupName
+key_pair = some-key
+spot_price = 0.005
+availability_zone = us-west-2c
 
 [VOLUME]
-id = vol-volume123
-device = /dev/sda2
-mount_point = /data/
+id = vol-00a56acb10f11b0e3
+device = /dev/sdf
+
+[ACCOUNT]
+user = ubuntu
+key_location = ~/.ssh/some-key.pem
+
+[SCRIPT]
+commands = ["sudo mkdir /data", "sudo mount /dev/xvdf /data", "sudo chown ubuntu /data"]
 ```
 
 Then just execute the `sspot request` command:  
@@ -43,7 +45,7 @@ Alternatively, you could create a tiny configuration file like this:
 [DEFAULT]
 aws_access_key_id = an_acces_key
 aws_secret_access_key = a_secret_key
-region_name = us-west-1
+region_name = us-west-2
 ```
 
 And then pass it on to the `spot` command:
