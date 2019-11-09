@@ -7,7 +7,12 @@ from tabulate import tabulate
 
 from soft_spot.configuration import get_account_info
 from soft_spot.implementations.price import get_prices
-from soft_spot.implementations.request import get_public_ip, request_instance
+from soft_spot.implementations.request import (
+    cancel_spot_requests,
+    get_active_spot_requests,
+    get_public_ip,
+    request_instance,
+)
 from soft_spot.implementations.scripts import execute_scripts
 from soft_spot.implementations.volumes import attach_device
 
@@ -60,6 +65,16 @@ def request(context, instance_file, volumes, scripts):
     click.echo(
         click.style(f"Done! the IP of the image is {public_ip}", bg="blue", fg="white")
     )
+
+
+@cli.command()
+@click.pass_context
+def cancel(context):
+    client = context.obj["client"]
+    active_requests = get_active_spot_requests(client)
+    click.echo(f"Cancelling {len(active_requests)} all active requests")
+    if click.confirm("Do you want to continue?"):
+        cancel_spot_requests(client, active_requests)
 
 
 @cli.command()

@@ -104,3 +104,22 @@ def wait_for_spot_request(client, spot_request_id):
 
 def get_public_ip(instance):
     return instance["NetworkInterfaces"][0]["Association"]["PublicIp"]
+
+
+def get_active_spot_requests(client):
+    response = client.describe_spot_instance_requests()
+    requests = response["SpotInstanceRequests"]
+    return [request for request in requests if request["State"] == "active"]
+
+
+def cancel_spot_requests(client, spot_requests):
+
+    client.cancel_spot_instance_requests(
+        SpotInstanceRequestIds=[
+            request["SpotInstanceRequestId"] for request in spot_requests
+        ]
+    )
+
+    client.terminate_instances(
+        InstanceIds=[request["InstanceId"] for request in spot_requests]
+    )
