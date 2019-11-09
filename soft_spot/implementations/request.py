@@ -1,7 +1,9 @@
 from functools import partial
 from time import sleep
 
+import backoff
 import click
+from botocore.exceptions import ClientError
 
 DELAY = 10
 
@@ -29,6 +31,7 @@ def get_instance_configuration(config):
     }
 
 
+@backoff.on_exception(backoff.expo, IndexError, max_time=90)
 def wait_until_instance_ready(client, instance_id):
     response = client.describe_instance_status(InstanceIds=[instance_id])
     status = response["InstanceStatuses"][0]["InstanceState"]["Name"]
@@ -81,6 +84,7 @@ def get_instance_from(client, spot_request):
     return wait_until_instance_ready(client, instance_id)
 
 
+@backoff.on_exception(backoff.expo, ClientError, max_time=90)
 def wait_for_spot_request(client, spot_request_id):
     response = client.describe_spot_instance_requests(
         SpotInstanceRequestIds=[spot_request_id]
