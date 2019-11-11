@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "soft-spot"
-version = "0.3.0"
+version = "0.4.0"
 description = "Move to a land of Spot AWS instances"
 authors = ["Antonio Feregrino <antonio.feregrino@gmail.com>"]
 license = "MIT"
