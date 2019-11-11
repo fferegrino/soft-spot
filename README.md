@@ -4,6 +4,8 @@
 
 Do you have a soft spot for cheap cloud computing (**a.k.a. AWS Spot instances**)? Me too, no shame on that.
 
+![Crappy Logo](/soft-spot.png?raw=true "Crappy Logo")
+
 However, what is a shame is having to go through that clunky UI and click here and there to get one; `soft-spot` makes it dead easy to launch an instance:
 
 ## How?
@@ -34,6 +36,24 @@ Then just execute the `sspot request` command:
 
 ```bash
 sspot request <<instance_config_file>>
+```
+
+### Other commands
+
+#### `cancel` 
+
+Cancel all **active** spot requests and terminate the instances associated to them:  
+
+```bash
+sspot cancel
+```
+
+#### `price`  
+
+Show the prices for the specified spot instance:
+
+```bash
+sspot price <<instance_config_file>>
 ```
 
 ### Credentials  
